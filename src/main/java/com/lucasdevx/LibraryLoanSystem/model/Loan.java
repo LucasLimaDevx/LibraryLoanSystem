@@ -25,9 +25,10 @@ public class Loan {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "loan_date", nullable = false, length = 25)
+	
+	@Column(name = "loan_date", nullable = false)
 	private LocalDateTime loanDate;
 	
-	@Column(name = "return_date", nullable = false, length = 25)
+	@Column(name = "return_date", nullable = false)
 	private LocalDateTime returnDate;
 }

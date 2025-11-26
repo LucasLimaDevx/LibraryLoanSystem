@@ -2,6 +2,14 @@ package com.lucasdevx.LibraryLoanSystem.dto;
 
 import java.time.LocalDateTime;
 
-public record LoanDTO(Long id, LocalDateTime loanDate, LocalDateTime returnDate) {
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public record LoanDTO(
+		Long id, 
+		@JsonFormat(pattern="dd/MM/yyyy HH:mm")
+		LocalDateTime loanDate,
+
+		@JsonFormat(pattern="dd/MM/yyyy HH:mm")
+		LocalDateTime returnDate) {
 
 }
