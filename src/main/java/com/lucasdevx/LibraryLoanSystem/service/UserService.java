@@ -1,5 +1,7 @@
 package com.lucasdevx.LibraryLoanSystem.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,29 @@ public class UserService {
 		return userRepository.save(user);
 	}
 	
+	public User getById(Long id) {
+		
+		return userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid id: " + id));
+	}
+	
+	public List<User> getAll(){
+		return userRepository.findAll();
+	}
+	
+	public User update(User user) {
+		User currentUser = getById(user.getId());
+		
+		currentUser.setName(user.getName());
+		currentUser.setEmail(user.getEmail());
+		currentUser.setPhone(user.getPhone());
+		
+		return userRepository.save(currentUser);
+		
+	}
+	
+	public void delete(Long id) {
+		userRepository.deleteById(id);
+	}
 	public User parseToUser(UserDTO userDTO) {
 		User user = new User();
 		
