@@ -34,6 +34,7 @@ public class AuthorController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AuthorDTO getById(@PathVariable Long id) {
+		
 		Author author = authorService.getById(id);
 		return authorService.parseToAuthorDTO(author);
 	}
