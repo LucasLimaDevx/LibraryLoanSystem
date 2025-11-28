@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucasdevx.LibraryLoanSystem.dto.BookDTO;
+import com.lucasdevx.LibraryLoanSystem.exception.ObjectNotFoundException;
 import com.lucasdevx.LibraryLoanSystem.model.Book;
 import com.lucasdevx.LibraryLoanSystem.repository.BookRepository;
 
@@ -21,7 +22,7 @@ public class BookService {
 	
 	public Book getById(Long id) {
 		
-		return bookRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid id: " + id));
+		return bookRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Invalid id: " + id));
 	}
 	
 	public List<Book> getAll(){
