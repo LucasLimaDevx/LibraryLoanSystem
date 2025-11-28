@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucasdevx.LibraryLoanSystem.dto.UserDTO;
+import com.lucasdevx.LibraryLoanSystem.exception.ObjectNotFoundException;
 import com.lucasdevx.LibraryLoanSystem.model.User;
 import com.lucasdevx.LibraryLoanSystem.repository.UserRepository;
 
@@ -22,7 +23,7 @@ public class UserService {
 	
 	public User getById(Long id) {
 		
-		return userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid id: " + id));
+		return userRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Invalid id: " + id));
 	}
 	
 	public List<User> getAll(){
@@ -41,6 +42,8 @@ public class UserService {
 	}
 	
 	public void delete(Long id) {
+		getById(id);
+		
 		userRepository.deleteById(id);
 	}
 	public User parseToUser(UserDTO userDTO) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucasdevx.LibraryLoanSystem.dto.AuthorDTO;
+import com.lucasdevx.LibraryLoanSystem.exception.ObjectIsNullException;
 import com.lucasdevx.LibraryLoanSystem.model.Author;
 import com.lucasdevx.LibraryLoanSystem.service.AuthorService;
 
@@ -27,6 +28,10 @@ public class AuthorController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public AuthorDTO insert(@RequestBody AuthorDTO authorDTO) {
+		if(authorDTO == null) {
+			throw new ObjectIsNullException();
+		}
+		
 		Author author = authorService.insert( authorService.parseToAuthor(authorDTO));
 		
 		return authorService.parseToAuthorDTO(author);
@@ -34,6 +39,9 @@ public class AuthorController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AuthorDTO getById(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
 		
 		Author author = authorService.getById(id);
 		return authorService.parseToAuthorDTO(author);
@@ -41,6 +49,7 @@ public class AuthorController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<AuthorDTO> getAll(){
+		
 		List<Author> authors = authorService.getAll();
 		List<AuthorDTO> authorsDTO = authors.stream()
 				.map((author) -> authorService.parseToAuthorDTO(author))
@@ -51,6 +60,16 @@ public class AuthorController {
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public AuthorDTO update(@RequestBody AuthorDTO authorDTO) {
+		if(authorDTO == null) {
+			throw new ObjectIsNullException();
+		}
+		if(authorDTO.id() == null) {
+			throw new NullPointerException("Id is null");
+		}
+		if(authorDTO.id() <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		Author newAuthor = authorService.parseToAuthor(authorDTO);
 		Author authorUpdated = authorService.update(newAuthor);
 		
@@ -59,6 +78,10 @@ public class AuthorController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		authorService.delete(id);
 		return ResponseEntity.noContent().build();
 	}

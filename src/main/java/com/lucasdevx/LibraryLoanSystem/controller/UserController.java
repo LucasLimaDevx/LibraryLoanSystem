@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucasdevx.LibraryLoanSystem.dto.UserDTO;
+import com.lucasdevx.LibraryLoanSystem.exception.ObjectIsNullException;
 import com.lucasdevx.LibraryLoanSystem.model.User;
 import com.lucasdevx.LibraryLoanSystem.service.UserService;
 
@@ -28,6 +29,9 @@ public class UserController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserDTO insert(@RequestBody UserDTO userDTO) {
+		if(userDTO == null) {
+			throw new ObjectIsNullException();
+		}
 		User user = userService.insert( userService.parseToUser(userDTO));
 		
 		return userService.parseToUserDTO(user);
@@ -35,6 +39,9 @@ public class UserController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserDTO getById(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
 		User user = userService.getById(id);
 		return userService.parseToUserDTO(user);
 	}
@@ -51,6 +58,16 @@ public class UserController {
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserDTO update(@RequestBody UserDTO userDTO) {
+		if(userDTO == null) {
+			throw new ObjectIsNullException();
+		}
+		if(userDTO.id() == null) {
+			throw new NullPointerException("Id is null");
+		}
+		if(userDTO.id() <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		User newUser = userService.parseToUser(userDTO);
 		User userUpdated = userService.update(newUser);
 		
@@ -59,6 +76,9 @@ public class UserController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
 		userService.delete(id);
 		return ResponseEntity.noContent().build();
 	}

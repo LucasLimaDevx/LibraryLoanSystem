@@ -41,6 +41,8 @@ public class BookService {
 	}
 	
 	public void delete(Long id) {
+		getById(id);
+		
 		bookRepository.deleteById(id);
 	}
 	public Book parseToBook(BookDTO bookDTO) {

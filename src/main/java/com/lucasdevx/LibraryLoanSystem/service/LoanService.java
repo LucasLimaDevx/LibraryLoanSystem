@@ -39,6 +39,8 @@ public class LoanService {
 	}
 	
 	public void delete(Long id) {
+		getById(id);
+		
 		loanRepository.deleteById(id);
 	}
 	public Loan parseToLoan(LoanDTO loanDTO) {

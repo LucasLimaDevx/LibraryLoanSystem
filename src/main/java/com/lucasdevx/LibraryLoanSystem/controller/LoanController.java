@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucasdevx.LibraryLoanSystem.dto.LoanDTO;
+import com.lucasdevx.LibraryLoanSystem.exception.ObjectIsNullException;
 import com.lucasdevx.LibraryLoanSystem.model.Loan;
 import com.lucasdevx.LibraryLoanSystem.service.LoanService;
 
@@ -28,6 +29,9 @@ public class LoanController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public LoanDTO insert(@RequestBody LoanDTO loanDTO) {
+		if(loanDTO.id() == null) {
+			throw new NullPointerException("Id is null");
+		}
 		Loan loan = loanService.insert( loanService.parseToLoan(loanDTO));
 		
 		return loanService.parseToLoanDTO(loan);
@@ -35,6 +39,9 @@ public class LoanController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public LoanDTO getById(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
 		Loan loan = loanService.getById(id);
 		return loanService.parseToLoanDTO(loan);
 	}
@@ -51,6 +58,15 @@ public class LoanController {
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public LoanDTO update(@RequestBody LoanDTO loanDTO) {
+		if(loanDTO == null) {
+			throw new ObjectIsNullException();
+		}
+		if(loanDTO.id() == null) {
+			throw new NullPointerException("Id is null");
+		}
+		if(loanDTO.id() <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
 		Loan newLoan = loanService.parseToLoan(loanDTO);
 		Loan loanUpdated = loanService.update(newLoan);
 		
@@ -59,6 +75,10 @@ public class LoanController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		loanService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
