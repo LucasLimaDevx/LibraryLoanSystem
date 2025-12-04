@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,4 +32,9 @@ public class Book {
 	
 	@Column(nullable = false, name = "quantity_copies", length = 30)
 	private Integer quantityCopies = 0;
+	
+	@ManyToOne
+	@JoinColumn(name = "author_id")
+	private Author author;
+	
 }

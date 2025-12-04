@@ -36,6 +36,7 @@ public class BookService {
 		currentBook.setTitle(book.getTitle());
 		currentBook.setYear(book.getYear());
 		currentBook.setQuantityCopies(book.getQuantityCopies());
+		currentBook.setAuthor(book.getAuthor());
 		
 		return bookRepository.save(currentBook);
 		
@@ -53,7 +54,7 @@ public class BookService {
 		book.setTitle(bookDTO.title());
 		book.setYear(bookDTO.year());
 		book.setQuantityCopies(bookDTO.quantityCopies());
-		
+		book.setAuthor(bookDTO.author());
 		return book;
 	}
 	
@@ -62,7 +63,8 @@ public class BookService {
 				book.getId(),
 				book.getTitle(),
 				book.getYear(),
-				book.getQuantityCopies());
+				book.getQuantityCopies(),
+				book.getAuthor());
 		
 	}
 }

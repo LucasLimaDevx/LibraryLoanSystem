@@ -1,13 +1,17 @@
 package com.lucasdevx.LibraryLoanSystem.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucasdevx.LibraryLoanSystem.dto.AuthorDTO;
+import com.lucasdevx.LibraryLoanSystem.dto.BookSummaryDTO;
 import com.lucasdevx.LibraryLoanSystem.exception.ObjectNotFoundException;
 import com.lucasdevx.LibraryLoanSystem.model.Author;
+import com.lucasdevx.LibraryLoanSystem.model.Book;
 import com.lucasdevx.LibraryLoanSystem.repository.AuthorRepository;
 
 @Service
@@ -55,10 +59,17 @@ public class AuthorService {
 	}
 	
 	public AuthorDTO parseToAuthorDTO(Author author) {
+		Set<Book> books = author.getBooks();
+		
+		Set<BookSummaryDTO> booksSummaryDTO = books.stream()
+				.map(book -> new BookSummaryDTO(book.getId(), book.getTitle(), book.getYear(), book.getQuantityCopies()))
+				.collect(Collectors.toSet());
+		
 		return new AuthorDTO(
 				author.getId(),
 				author.getName(),
-				author.getNationality());
+				author.getNationality(),
+				booksSummaryDTO);
 		
 	}
 	
