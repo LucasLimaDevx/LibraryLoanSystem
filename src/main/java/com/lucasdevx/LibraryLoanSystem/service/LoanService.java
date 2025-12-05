@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lucasdevx.LibraryLoanSystem.dto.LoanDTO;
 import com.lucasdevx.LibraryLoanSystem.exception.ObjectNotFoundException;
+import com.lucasdevx.LibraryLoanSystem.model.Book;
 import com.lucasdevx.LibraryLoanSystem.model.Loan;
 import com.lucasdevx.LibraryLoanSystem.repository.LoanRepository;
 
@@ -34,6 +35,8 @@ public class LoanService {
 		
 		currentLoan.setLoanDate(loan.getLoanDate());
 		currentLoan.setReturnDate(loan.getReturnDate());
+		currentLoan.setUser(loan.getUser());
+		currentLoan.setBook(loan.getBook());
 		
 		return loanRepository.save(currentLoan);
 		
@@ -50,6 +53,8 @@ public class LoanService {
 		loan.setId(loanDTO.id());
 		loan.setLoanDate(loanDTO.loanDate());
 		loan.setReturnDate(loanDTO.returnDate());
+		loan.setUser(loanDTO.user());
+		loan.setBook(loanDTO.book());
 		
 		return loan;
 	}
@@ -58,7 +63,9 @@ public class LoanService {
 		return new LoanDTO(
 				loan.getId(),
 				loan.getLoanDate(),
-				loan.getReturnDate());
+				loan.getReturnDate(),
+				loan.getUser(),
+				loan.getBook());
 		
 	}
 }

@@ -29,7 +29,7 @@ public class LoanController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public LoanDTO insert(@RequestBody LoanDTO loanDTO) {
-		if(loanDTO.id() == null) {
+		if(loanDTO == null) {
 			throw new NullPointerException("Id is null");
 		}
 		Loan loan = loanService.insert( loanService.parseToLoan(loanDTO));
